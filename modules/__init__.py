@@ -1,0 +1,1 @@
+# FireReady AI — modules package
