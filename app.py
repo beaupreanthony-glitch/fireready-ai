@@ -734,6 +734,21 @@ st.markdown(
 )
 
 # ---------------------------------------------------------------------------
+# Navigation options — defined here so card buttons can also reference them
+# ---------------------------------------------------------------------------
+_NAV_OPTIONS = [
+    "🏠  Home",
+    "💪  Fitness Planner",
+    "📚  Knowledge & Quiz",
+    "📅  Annual Planner",
+    "🎯  Scenario Trainer",
+    "🛠️  Drill Builder",
+    "⭐  Officer Development",
+]
+if "nav_index" not in st.session_state:
+    st.session_state.nav_index = 0
+
+# ---------------------------------------------------------------------------
 # Sidebar navigation
 # ---------------------------------------------------------------------------
 with st.sidebar:
@@ -747,18 +762,12 @@ with st.sidebar:
 
     page = st.radio(
         "nav",
-        [
-            "🏠  Home",
-            "💪  Fitness Planner",
-            "📚  Knowledge & Quiz",
-            "📅  Annual Planner",
-            "🎯  Scenario Trainer",
-            "🛠️  Drill Builder",
-            "⭐  Officer Development",
-        ],
-        key="sidebar_nav",
+        _NAV_OPTIONS,
+        index=st.session_state.nav_index,
         label_visibility="hidden",
     )
+    # Keep nav_index in sync when user clicks the sidebar directly
+    st.session_state.nav_index = _NAV_OPTIONS.index(page)
 
     st.markdown('<div class="fr-sidebar-divider"></div>', unsafe_allow_html=True)
 
@@ -912,7 +921,7 @@ if current_page == "Home":
                 unsafe_allow_html=True,
             )
             if st.button(mod["tag"], key=f"card_{i}", use_container_width=True):
-                st.session_state.sidebar_nav = mod["nav_label"]
+                st.session_state.nav_index = _NAV_OPTIONS.index(mod["nav_label"])
                 st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
